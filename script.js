@@ -1,5 +1,4 @@
-const form = document.querySelector("#financeForm");
-const resetDemo = document.querySelector("#resetDemo");
+﻿const form = document.querySelector("#financeForm");
 const resultPanel = document.querySelector(".result-panel");
 const statusTitle = document.querySelector("#statusTitle");
 const statusText = document.querySelector("#statusText");
@@ -12,23 +11,6 @@ const printReport = document.querySelector("#printReport");
 const reportModal = document.querySelector("#reportModal");
 const fullReport = document.querySelector("#fullReport");
 let latestReport = null;
-
-const demoValues = {
-  businessName: "شركة تجريبية",
-  businessType: "تجارة",
-  currency: "جنيه",
-  employees: 8,
-  revenue: 450000,
-  cost: 250000,
-  expenses: 95000,
-  salaries: 65000,
-  cash: 220000,
-  receivables: 180000,
-  payables: 140000,
-  inventory: 120000,
-  collectionDays: 45,
-  paymentDays: 30,
-};
 
 function getNumber(formData, key) {
   return Number(formData.get(key)) || 0;
@@ -308,24 +290,14 @@ function analyze() {
   updateHero(ratios.score, ratios);
 }
 
-function restoreDemo() {
-  Object.entries(demoValues).forEach(([key, value]) => {
-    const field = form.elements[key];
-    if (field) field.value = value;
-  });
-  analyze();
-}
-
 form.addEventListener("submit", (event) => {
   event.preventDefault();
   analyze();
 });
 
-resetDemo.addEventListener("click", restoreDemo);
-restoreDemo();
 
 openReport.addEventListener("click", () => {
-  analyze();
+  if (!latestReport) return;
   fullReport.innerHTML = latestReport;
   reportModal.classList.add("is-open");
   reportModal.setAttribute("aria-hidden", "false");

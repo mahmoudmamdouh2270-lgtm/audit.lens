@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
@@ -50,7 +50,7 @@
           <div class="field-grid">
             <label>
               <span>اسم النشاط</span>
-              <input name="businessName" type="text" value="شركة تجريبية" />
+              <input name="businessName" type="text" placeholder="اسم شركتك أو نشاطك" />
             </label>
 
             <label>
@@ -78,63 +78,62 @@
 
             <label>
               <span>عدد الموظفين</span>
-              <input name="employees" type="number" min="0" value="8" />
+              <input name="employees" type="number" min="0" placeholder="مثال: 5" />
             </label>
 
             <label>
               <span>الإيرادات الشهرية</span>
-              <input name="revenue" type="number" min="0" value="450000" />
+              <input name="revenue" type="number" min="0" placeholder="إجمالي إيرادات الشهر" />
             </label>
 
             <label>
               <span>تكلفة البضاعة أو الخدمة</span>
-              <input name="cost" type="number" min="0" value="250000" />
+              <input name="cost" type="number" min="0" placeholder="تكلفة البضاعة أو الخدمة المباعة" />
             </label>
 
             <label>
               <span>المصروفات التشغيلية</span>
-              <input name="expenses" type="number" min="0" value="95000" />
+              <input name="expenses" type="number" min="0" placeholder="إيجار، مرافق، تسويق…" />
             </label>
 
             <label>
               <span>الرواتب</span>
-              <input name="salaries" type="number" min="0" value="65000" />
+              <input name="salaries" type="number" min="0" placeholder="إجمالي رواتب الموظفين" />
             </label>
 
             <label>
               <span>النقدية المتاحة حاليا</span>
-              <input name="cash" type="number" min="0" value="220000" />
+              <input name="cash" type="number" min="0" placeholder="النقد المتاح في البنك الآن" />
             </label>
 
             <label>
               <span>إجمالي العملاء المدينين</span>
-              <input name="receivables" type="number" min="0" value="180000" />
+              <input name="receivables" type="number" min="0" placeholder="ما تستحقه من عملاء" />
             </label>
 
             <label>
               <span>التزامات قصيرة الأجل</span>
-              <input name="payables" type="number" min="0" value="140000" />
+              <input name="payables" type="number" min="0" placeholder="ما عليك لموردين" />
             </label>
 
             <label>
               <span>قيمة المخزون</span>
-              <input name="inventory" type="number" min="0" value="120000" />
+              <input name="inventory" type="number" min="0" placeholder="قيمة المخزون الحالية" />
             </label>
 
             <label>
               <span>متوسط التحصيل بالأيام</span>
-              <input name="collectionDays" type="number" min="0" value="45" />
+              <input name="collectionDays" type="number" min="0" placeholder="متوسط أيام التحصيل" />
             </label>
 
             <label>
               <span>متوسط السداد للموردين بالأيام</span>
-              <input name="paymentDays" type="number" min="0" value="30" />
+              <input name="paymentDays" type="number" min="0" placeholder="متوسط أيام السداد للموردين" />
             </label>
           </div>
 
           <div class="actions">
             <button type="submit">حلل الوضع المالي</button>
-            <button type="button" id="resetDemo" class="ghost">بيانات تجريبية</button>
           </div>
         </form>
 
