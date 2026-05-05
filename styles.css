@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --ink: #202124;
   --muted: #666a70;
   --line: #e2e0e3;
@@ -39,6 +39,12 @@ select {
   padding: 18px 0 24px;
 }
 
+/* ---- Utility ---- */
+.is-hidden {
+  display: none !important;
+}
+
+/* ---- Topbar ---- */
 .topbar {
   direction: ltr;
   display: flex;
@@ -85,6 +91,7 @@ select {
   font-weight: 700;
 }
 
+/* ---- Hero ---- */
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 330px;
@@ -154,6 +161,7 @@ h1 {
   font-size: 1.35rem;
 }
 
+/* ---- Workspace ---- */
 .workspace {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(390px, 0.92fr);
@@ -183,6 +191,7 @@ h1 {
   font-size: 1.5rem;
 }
 
+/* ---- Field grid ---- */
 .field-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -195,12 +204,64 @@ label {
   min-width: 0;
 }
 
-label span {
+label > span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   color: #33403b;
   font-size: 0.9rem;
   font-weight: 700;
 }
 
+/* ---- Tooltips ---- */
+.tip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-size: 0.72rem;
+  font-weight: 900;
+  cursor: help;
+  flex-shrink: 0;
+  position: relative;
+  user-select: none;
+  line-height: 1;
+}
+
+.tip::after {
+  content: attr(data-tip);
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 10;
+  width: 240px;
+  padding: 10px 12px;
+  border-radius: 7px;
+  color: white;
+  background: #28252a;
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.55;
+  text-align: right;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition: opacity 160ms ease, transform 160ms ease;
+  white-space: normal;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.22);
+}
+
+.tip:hover::after,
+.tip:focus::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---- Inputs ---- */
 input,
 select {
   width: 100%;
@@ -218,12 +279,36 @@ select:focus {
   border-color: var(--accent);
 }
 
+/* ---- Actions row ---- */
 .actions {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   gap: 10px;
   margin-top: 18px;
 }
 
+.example-strip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.example-strip > span {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.example-strip .ghost {
+  min-height: 36px;
+  padding: 0 12px;
+  font-size: 0.85rem;
+}
+
+/* ---- Buttons ---- */
 button {
   min-height: 46px;
   border: 0;
@@ -248,6 +333,11 @@ button.ghost {
   background: var(--accent-soft);
 }
 
+button.ghost:hover {
+  background: #ecd4e6;
+}
+
+/* ---- Result panel ---- */
 .result-panel {
   overflow: hidden;
 }
@@ -293,6 +383,7 @@ button.ghost {
   font-size: 0.78rem;
 }
 
+/* ---- Dashboard ---- */
 .dashboard {
   padding: 18px;
   background: #fbfafb;
@@ -484,6 +575,7 @@ button.ghost {
   background: linear-gradient(180deg, #e2b960, #b9872d);
 }
 
+/* ---- Health meters ---- */
 .health-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -523,6 +615,7 @@ button.ghost {
   color: var(--ink);
 }
 
+/* ---- Insights / Report notes ---- */
 .insight-block {
   padding: 18px;
   background: white;
@@ -554,6 +647,7 @@ li {
   padding: 0;
 }
 
+/* ---- CTA / Contact strips ---- */
 .cta-strip,
 .contact-strip {
   display: flex;
@@ -701,38 +795,35 @@ li {
   font-size: 1.05rem;
 }
 
-.feedback-form {
+/* ---- Follow-up form (lightweight) ---- */
+.follow-up-form {
   display: grid;
   gap: 16px;
-  padding: 22px;
+  padding: 24px;
   background: white;
   border: 1px solid var(--line);
   border-radius: 8px;
-  cursor: pointer;
 }
 
-.feedback-head {
+.follow-up-head {
   text-align: center;
 }
 
-.feedback-head strong,
-.feedback-head span {
+.follow-up-head strong {
   display: block;
+  font-size: 1.15rem;
+  margin-bottom: 6px;
 }
 
-.feedback-head strong {
-  font-size: 1.2rem;
-}
-
-.feedback-head span {
-  margin-top: 6px;
+.follow-up-head span {
+  display: block;
   color: var(--muted);
   line-height: 1.6;
 }
 
-.feedback-grid {
+.follow-up-contacts {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 14px;
 }
 
@@ -743,13 +834,14 @@ li {
 
 textarea {
   width: 100%;
-  min-height: 110px;
+  min-height: 90px;
   border: 1px solid var(--line);
   border-radius: 6px;
   padding: 12px;
   color: var(--ink);
   background: var(--surface);
   resize: vertical;
+  font: inherit;
 }
 
 textarea:focus {
@@ -776,6 +868,7 @@ textarea:focus {
   display: none;
 }
 
+/* ---- Footer ---- */
 footer {
   padding: 22px 0 0;
   color: var(--muted);
@@ -789,6 +882,7 @@ footer a {
   text-decoration: none;
 }
 
+/* ---- Legal pages ---- */
 .legal-page {
   width: min(880px, calc(100% - 32px));
   margin: 0 auto;
@@ -824,12 +918,13 @@ footer a {
   line-height: 1.9;
 }
 
-  .legal-card a {
+.legal-card a {
   color: var(--accent);
   font-weight: 800;
   text-decoration: none;
 }
 
+/* ---- Modal ---- */
 .modal {
   position: fixed;
   inset: 0;
@@ -846,8 +941,8 @@ footer a {
 }
 
 .modal-panel {
-  width: min(920px, 100%);
-  max-height: min(88vh, 920px);
+  width: min(960px, 100%);
+  max-height: min(88vh, 960px);
   overflow: auto;
   background: white;
   border: 1px solid var(--line);
@@ -885,6 +980,7 @@ footer a {
   padding: 20px;
 }
 
+/* ---- Report sections ---- */
 .report-section {
   padding: 16px;
   border: 1px solid var(--line);
@@ -896,6 +992,117 @@ footer a {
   margin-bottom: 10px;
   color: var(--accent);
   font-size: 1.05rem;
+}
+
+/* Score block in report */
+.report-score-block {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: white;
+}
+
+.report-score-ring {
+  flex: 0 0 auto;
+  width: 90px;
+  height: 90px;
+  border-radius: 999px;
+  border: 6px solid;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  text-align: center;
+}
+
+.report-score-ring strong {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.report-score-ring small {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
+.report-score-meta h3 {
+  margin-bottom: 4px;
+}
+
+/* KPI grid in report */
+.report-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.report-kpi {
+  padding: 12px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  text-align: center;
+}
+
+.report-kpi span {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.report-kpi strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 4px;
+}
+
+.report-kpi small {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Meters in report */
+.report-meters {
+  display: grid;
+  gap: 10px;
+}
+
+.report-meter-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 120px;
+  align-items: center;
+  gap: 12px;
+}
+
+.report-meter-row > span {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--ink);
+  text-align: right;
+}
+
+.report-meter-bar {
+  height: 10px;
+  border-radius: 999px;
+  background: #eeecef;
+  overflow: hidden;
+}
+
+.report-meter-bar > div {
+  height: 100%;
+  border-radius: inherit;
+  transition: width 220ms ease;
+}
+
+.report-meter-row > strong {
+  font-size: 0.82rem;
+  color: var(--ink);
 }
 
 .report-table {
@@ -927,43 +1134,7 @@ footer a {
   color: var(--accent);
 }
 
-@media print {
-  body > .app-shell {
-    display: none;
-  }
-
-  .modal {
-    position: static;
-    display: block !important;
-    padding: 0;
-    background: white;
-  }
-
-  .modal-panel {
-    width: 100%;
-    max-height: none;
-    overflow: visible;
-    border: 0;
-    box-shadow: none;
-  }
-
-  .print-logo {
-    display: block;
-    position: static;
-    width: 150px;
-    height: auto;
-    margin: 0 auto 16px 0;
-    padding: 0;
-    background: transparent;
-    mix-blend-mode: normal;
-  }
-
-  .modal-head button,
-  .modal-actions {
-    display: none;
-  }
-}
-
+/* ---- Score states ---- */
 .status-good .score-ring {
   background:
     radial-gradient(circle at center, white 58%, transparent 60%),
@@ -982,6 +1153,96 @@ footer a {
     conic-gradient(var(--rose) calc(var(--score, 0) * 1%), #ece6ea 0);
 }
 
+/* ---- Print styles ---- */
+@media print {
+  /* Hide everything except the modal report */
+  body {
+    background: white;
+  }
+
+  .app-shell {
+    display: none !important;
+  }
+
+  .modal {
+    position: static !important;
+    display: block !important;
+    padding: 0;
+    background: white;
+  }
+
+  .modal-panel {
+    width: 100%;
+    max-height: none;
+    overflow: visible;
+    border: 0;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .print-logo {
+    display: block;
+    width: 160px;
+    height: auto;
+    margin: 16px 0 0 0;
+    padding: 16px 20px 0;
+    mix-blend-mode: normal;
+  }
+
+  .modal-head {
+    padding: 12px 20px 16px;
+    border-bottom: 2px solid var(--line);
+  }
+
+  .modal-head button,
+  .modal-actions {
+    display: none !important;
+  }
+
+  /* Report layout */
+  .report-body {
+    padding: 16px 20px;
+    gap: 12px;
+  }
+
+  .report-section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: white;
+  }
+
+  .report-score-block {
+    background: #f9f9f9;
+  }
+
+  .report-kpi-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .report-kpi {
+    border: 1px solid #ddd;
+  }
+
+  .report-meter-bar > div {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .report-table th {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+    background: #f6e9f1 !important;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+/* ---- Responsive: tablet ---- */
 @media (max-width: 920px) {
   .hero,
   .workspace {
@@ -1001,11 +1262,12 @@ footer a {
     grid-template-columns: 1fr;
   }
 
-  .feedback-grid {
-    grid-template-columns: 1fr 1fr;
+  .report-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
+/* ---- Responsive: mobile ---- */
 @media (max-width: 620px) {
   .app-shell {
     width: min(100% - 20px, 1180px);
@@ -1031,8 +1293,11 @@ footer a {
 
   .field-grid,
   .kpi-grid,
-  .health-grid,
-  .feedback-grid {
+  .health-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .follow-up-contacts {
     grid-template-columns: 1fr;
   }
 
@@ -1052,7 +1317,26 @@ footer a {
     align-items: stretch;
   }
 
+  .example-strip {
+    justify-content: flex-start;
+  }
+
   .score-ring {
     align-self: center;
+  }
+
+  .report-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .report-meter-row {
+    grid-template-columns: 70px 1fr 100px;
+    gap: 8px;
+  }
+
+  .tip::after {
+    right: auto;
+    left: 0;
+    width: 200px;
   }
 }

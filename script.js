@@ -1,4 +1,9 @@
-﻿const form = document.querySelector("#financeForm");
+﻿// --- Analytics stub: replace body with GA4/Plausible calls when ready ---
+function track(event, data) {
+  // window.gtag?.("event", event, data);
+}
+
+const form = document.querySelector("#financeForm");
 const resultPanel = document.querySelector(".result-panel");
 const statusTitle = document.querySelector("#statusTitle");
 const statusText = document.querySelector("#statusText");
@@ -10,8 +15,73 @@ const closeReport = document.querySelector("#closeReport");
 const printReport = document.querySelector("#printReport");
 const reportModal = document.querySelector("#reportModal");
 const fullReport = document.querySelector("#fullReport");
+const followUpForm = document.querySelector("#followUpForm");
 let latestReport = null;
 
+// --- Sample datasets ---
+const sampleData = {
+  restaurant: {
+    businessName: "مطعم النيل",
+    businessType: "مطعم أو كافيه",
+    currency: "جنيه",
+    employees: 6,
+    revenue: 120000,
+    cost: 55000,
+    expenses: 18000,
+    salaries: 22000,
+    cash: 35000,
+    receivables: 8000,
+    payables: 25000,
+    inventory: 15000,
+    collectionDays: 7,
+    paymentDays: 30,
+  },
+  services: {
+    businessName: "مكتب الخبراء",
+    businessType: "خدمات",
+    currency: "جنيه",
+    employees: 4,
+    revenue: 95000,
+    cost: 15000,
+    expenses: 22000,
+    salaries: 38000,
+    cash: 42000,
+    receivables: 55000,
+    payables: 18000,
+    inventory: 0,
+    collectionDays: 45,
+    paymentDays: 30,
+  },
+  trade: {
+    businessName: "مؤسسة الفجر التجارية",
+    businessType: "تجارة",
+    currency: "جنيه",
+    employees: 8,
+    revenue: 380000,
+    cost: 265000,
+    expenses: 28000,
+    salaries: 32000,
+    cash: 68000,
+    receivables: 95000,
+    payables: 110000,
+    inventory: 180000,
+    collectionDays: 35,
+    paymentDays: 45,
+  },
+};
+
+function loadExample(type) {
+  const d = sampleData[type];
+  if (!d) return;
+  Object.entries(d).forEach(([key, value]) => {
+    const field = form.elements[key];
+    if (field) field.value = value;
+  });
+  track("example", { type });
+  analyze();
+}
+
+// --- Utility functions ---
 function getNumber(formData, key) {
   return Number(formData.get(key)) || 0;
 }
@@ -21,18 +91,18 @@ function clamp(value, min, max) {
 }
 
 function setText(id, value) {
-  const element = document.querySelector(`#${id}`);
-  if (element) element.textContent = value;
+  const el = document.querySelector(`#${id}`);
+  if (el) el.textContent = value;
 }
 
 function setWidth(id, value) {
-  const element = document.querySelector(`#${id}`);
-  if (element) element.style.width = `${clamp(value, 0, 100)}%`;
+  const el = document.querySelector(`#${id}`);
+  if (el) el.style.width = `${clamp(value, 0, 100)}%`;
 }
 
 function setHeight(id, value) {
-  const element = document.querySelector(`#${id}`);
-  if (element) element.style.height = `${clamp(value, 6, 100)}%`;
+  const el = document.querySelector(`#${id}`);
+  if (el) el.style.height = `${clamp(value, 6, 100)}%`;
 }
 
 function formatMoney(value, currency) {
@@ -53,6 +123,7 @@ function ratingWithPercent(value) {
   return `${rating(value)} - ${Math.round(value)}%`;
 }
 
+// --- Core calculation ---
 function calculateScore(data) {
   const grossMargin = data.revenue ? data.grossProfit / data.revenue : 0;
   const netMargin = data.revenue ? data.netProfit / data.revenue : 0;
@@ -128,25 +199,98 @@ function buildInsights(data, ratios) {
   };
 }
 
+// --- Report builder (enriched for print) ---
 function createFullReport(data, ratios, narrative) {
+  const scoreColor = ratios.score >= 72 ? "#2f8f73" : ratios.score >= 48 ? "#b9872d" : "#b44955";
+  const scoreLabel = ratios.score >= 72 ? "قراءة مطمئنة" : ratios.score >= 48 ? "تحتاج ضبط" : "إنذار مالي مبكر";
+
   return `
+    <section class="report-section report-score-block">
+      <div class="report-score-ring" style="border-color:${scoreColor}; color:${scoreColor}">
+        <strong>${ratios.score}</strong>
+        <small>من 100</small>
+      </div>
+      <div class="report-score-meta">
+        <h3 style="color:${scoreColor}; margin-bottom:4px">${scoreLabel}</h3>
+        <p style="margin:0; color:#555">${data.businessName} — ${data.businessType} — ${new Date().toLocaleDateString("ar-EG")}</p>
+      </div>
+    </section>
+
     <section class="report-section">
       <h3>ملخص تنفيذي</h3>
       <p>${data.businessName} حصل على درجة ${ratios.score}/100. التقرير يوضح قراءة عملية للربحية والسيولة والمصروفات والتحصيل بناء على الأرقام المدخلة.</p>
     </section>
 
     <section class="report-section">
-      <h3>المؤشرات المالية</h3>
+      <h3>المؤشرات الرئيسية</h3>
+      <div class="report-kpi-grid">
+        <div class="report-kpi">
+          <span>إجمالي الربح</span>
+          <strong>${formatMoney(data.grossProfit, data.currency)}</strong>
+          <small>هامش ${formatPercent(ratios.grossMargin * 100)}</small>
+        </div>
+        <div class="report-kpi">
+          <span>صافي الربح</span>
+          <strong style="color:${data.netProfit >= 0 ? "#2f8f73" : "#b44955"}">${formatMoney(data.netProfit, data.currency)}</strong>
+          <small>هامش ${formatPercent(ratios.netMargin * 100)}</small>
+        </div>
+        <div class="report-kpi">
+          <span>كفاية النقدية</span>
+          <strong>${Math.round(ratios.runway * 10) / 10} شهر</strong>
+          <small>نقدية ${formatMoney(data.cash, data.currency)}</small>
+        </div>
+        <div class="report-kpi">
+          <span>تغطية السيولة</span>
+          <strong>${Math.round(ratios.liquidityCoverage * 10) / 10}x</strong>
+          <small>التزامات ${formatMoney(data.payables, data.currency)}</small>
+        </div>
+      </div>
+    </section>
+
+    <section class="report-section">
+      <h3>مقاييس الأداء</h3>
+      <div class="report-meters">
+        <div class="report-meter-row">
+          <span>الربحية</span>
+          <div class="report-meter-bar"><div style="width:${Math.round((ratios.profitabilityScore/30)*100)}%; background:${scoreColor}"></div></div>
+          <strong>${ratingWithPercent((ratios.profitabilityScore/30)*100)}</strong>
+        </div>
+        <div class="report-meter-row">
+          <span>السيولة</span>
+          <div class="report-meter-bar"><div style="width:${Math.round((ratios.liquidityScore/30)*100)}%; background:${scoreColor}"></div></div>
+          <strong>${ratingWithPercent((ratios.liquidityScore/30)*100)}</strong>
+        </div>
+        <div class="report-meter-row">
+          <span>المصروفات</span>
+          <div class="report-meter-bar"><div style="width:${Math.round((ratios.expensesScore/20)*100)}%; background:${scoreColor}"></div></div>
+          <strong>${ratingWithPercent((ratios.expensesScore/20)*100)}</strong>
+        </div>
+        <div class="report-meter-row">
+          <span>التحصيل</span>
+          <div class="report-meter-bar"><div style="width:${Math.round((ratios.collectionScore/20)*100)}%; background:${scoreColor}"></div></div>
+          <strong>${ratingWithPercent((ratios.collectionScore/20)*100)}</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="report-section">
+      <h3>جدول المؤشرات المالية</h3>
       <table class="report-table">
         <thead>
           <tr><th>المؤشر</th><th>القيمة</th></tr>
         </thead>
         <tbody>
           <tr><td>الإيرادات الشهرية</td><td>${formatMoney(data.revenue, data.currency)}</td></tr>
+          <tr><td>تكلفة البضاعة/الخدمة</td><td>${formatMoney(data.cost, data.currency)}</td></tr>
           <tr><td>إجمالي الربح</td><td>${formatMoney(data.grossProfit, data.currency)}</td></tr>
           <tr><td>هامش إجمالي الربح</td><td>${formatPercent(ratios.grossMargin * 100)}</td></tr>
+          <tr><td>المصروفات التشغيلية</td><td>${formatMoney(data.expenses, data.currency)}</td></tr>
+          <tr><td>الرواتب</td><td>${formatMoney(data.salaries, data.currency)}</td></tr>
           <tr><td>صافي الربح</td><td>${formatMoney(data.netProfit, data.currency)}</td></tr>
           <tr><td>هامش صافي الربح</td><td>${formatPercent(ratios.netMargin * 100)}</td></tr>
+          <tr><td>النقدية المتاحة</td><td>${formatMoney(data.cash, data.currency)}</td></tr>
+          <tr><td>العملاء المدينون</td><td>${formatMoney(data.receivables, data.currency)}</td></tr>
+          <tr><td>الالتزامات قصيرة الأجل</td><td>${formatMoney(data.payables, data.currency)}</td></tr>
           <tr><td>كفاية النقدية</td><td>${Math.round(ratios.runway * 10) / 10} شهر</td></tr>
           <tr><td>تغطية السيولة</td><td>${Math.round(ratios.liquidityCoverage * 10) / 10}x</td></tr>
           <tr><td>متوسط التحصيل</td><td>${data.collectionDays} يوم</td></tr>
@@ -243,6 +387,7 @@ function updateHero(score, ratios) {
   setText("heroMargin", formatPercent(ratios.netMargin * 100));
 }
 
+// --- Main analyze function ---
 function analyze() {
   const formData = new FormData(form);
   const data = {
@@ -268,6 +413,7 @@ function analyze() {
   const ratios = calculateScore(data);
   const narrative = buildInsights(data, ratios);
   latestReport = createFullReport(data, ratios, narrative);
+
   const statusClass = ratios.score >= 72 ? "status-good" : ratios.score >= 48 ? "status-watch" : "status-risk";
   const title = ratios.score >= 72 ? "قراءة مطمئنة" : ratios.score >= 48 ? "تحتاج ضبط" : "إنذار مالي مبكر";
   const text =
@@ -288,16 +434,25 @@ function analyze() {
   setList(insightsEl, narrative.insights);
   setList(actionsEl, narrative.actions);
   updateHero(ratios.score, ratios);
+
+  // Show the follow-up form after first analysis
+  if (followUpForm) followUpForm.classList.remove("is-hidden");
 }
 
+// --- Event listeners ---
 form.addEventListener("submit", (event) => {
   event.preventDefault();
+  track("analyze");
   analyze();
 });
 
+document.querySelectorAll("[data-example]").forEach((btn) => {
+  btn.addEventListener("click", () => loadExample(btn.dataset.example));
+});
 
 openReport.addEventListener("click", () => {
   if (!latestReport) return;
+  track("report_open");
   fullReport.innerHTML = latestReport;
   reportModal.classList.add("is-open");
   reportModal.setAttribute("aria-hidden", "false");
@@ -316,9 +471,13 @@ reportModal.addEventListener("click", (event) => {
   if (event.target === reportModal) closeReport.click();
 });
 
+if (followUpForm) {
+  followUpForm.addEventListener("submit", () => track("followup_submit"));
+}
+
 document.querySelectorAll(".interactive-card").forEach((card) => {
   card.addEventListener("click", (event) => {
-    if (event.target.closest("a, button, input, select")) return;
+    if (event.target.closest("a, button, input, select, textarea")) return;
     card.classList.toggle("is-pinned");
   });
 });

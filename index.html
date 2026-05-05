@@ -82,58 +82,94 @@
             </label>
 
             <label>
-              <span>الإيرادات الشهرية</span>
+              <span>
+                الإيرادات الشهرية
+                <span class="tip" data-tip="إجمالي ما دخل من مبيعات أو خدمات خلال الشهر قبل أي خصم. مثال: لو بعت بـ 80,000 وفي مردودات 2,000 — اكتب 78,000">؟</span>
+              </span>
               <input name="revenue" type="number" min="0" placeholder="إجمالي إيرادات الشهر" />
             </label>
 
             <label>
-              <span>تكلفة البضاعة أو الخدمة</span>
+              <span>
+                تكلفة البضاعة أو الخدمة
+                <span class="tip" data-tip="التكلفة المباشرة لما بعته. تجارة: سعر الشراء. مطعم: تكلفة المواد الخام. خدمات: تكلفة التنفيذ المباشرة.">؟</span>
+              </span>
               <input name="cost" type="number" min="0" placeholder="تكلفة البضاعة أو الخدمة المباعة" />
             </label>
 
             <label>
-              <span>المصروفات التشغيلية</span>
+              <span>
+                المصروفات التشغيلية
+                <span class="tip" data-tip="المصروفات الثابتة غير المرتبطة بالمبيعات مباشرة. مثال: إيجار 3,000 + كهرباء 800 + إنترنت 200 + تسويق 1,500 = 5,500">؟</span>
+              </span>
               <input name="expenses" type="number" min="0" placeholder="إيجار، مرافق، تسويق…" />
             </label>
 
             <label>
-              <span>الرواتب</span>
+              <span>
+                الرواتب
+                <span class="tip" data-tip="إجمالي رواتب وبدلات الموظفين كلهم. لا تشمل راتبك أنت إلا لو شركة رسمية. مثال: 3 موظفين × 3,000 = 9,000">؟</span>
+              </span>
               <input name="salaries" type="number" min="0" placeholder="إجمالي رواتب الموظفين" />
             </label>
 
             <label>
-              <span>النقدية المتاحة حاليا</span>
+              <span>
+                النقدية المتاحة حاليا
+                <span class="tip" data-tip="الكاش الموجود في البنك والخزينة الآن فعلياً. لا تحسب الذمم أو الشيكات اللي لسه ما اتحصلتش.">؟</span>
+              </span>
               <input name="cash" type="number" min="0" placeholder="النقد المتاح في البنك الآن" />
             </label>
 
             <label>
-              <span>إجمالي العملاء المدينين</span>
+              <span>
+                إجمالي العملاء المدينين
+                <span class="tip" data-tip="ما يستحق عليك تحصيله من عملاء مقابل بضاعة أو خدمة سلّمتها فعلاً بس لسه ما اتدفعتش. يعني: فاتورة مفتوحة.">؟</span>
+              </span>
               <input name="receivables" type="number" min="0" placeholder="ما تستحقه من عملاء" />
             </label>
 
             <label>
-              <span>التزامات قصيرة الأجل</span>
+              <span>
+                التزامات قصيرة الأجل
+                <span class="tip" data-tip="ما عليك من ديون مستحقة خلال أقل من سنة: فواتير موردين، قسط قرض، أجار متأخر. مثال: مورد 8,000 + قسط 3,000 = 11,000">؟</span>
+              </span>
               <input name="payables" type="number" min="0" placeholder="ما عليك لموردين" />
             </label>
 
             <label>
-              <span>قيمة المخزون</span>
+              <span>
+                قيمة المخزون
+                <span class="tip" data-tip="قيمة البضاعة الموجودة عندك حالياً بسعر التكلفة. لو خدمات أو مطعم وما عندكش مخزون — اكتب 0">؟</span>
+              </span>
               <input name="inventory" type="number" min="0" placeholder="قيمة المخزون الحالية" />
             </label>
 
             <label>
-              <span>متوسط التحصيل بالأيام</span>
+              <span>
+                متوسط التحصيل بالأيام
+                <span class="tip" data-tip="كم يوم بالمتوسط من تاريخ الفاتورة لحد ما العميل يدفع؟ كاش فوري = 1. دفع بعد شهر = 30. لو مش عارف، اتخيل آخر 5 عملاء.">؟</span>
+              </span>
               <input name="collectionDays" type="number" min="0" placeholder="متوسط أيام التحصيل" />
             </label>
 
             <label>
-              <span>متوسط السداد للموردين بالأيام</span>
+              <span>
+                متوسط السداد للموردين
+                <span class="tip" data-tip="كم يوم بتاخد عشان تدفع للمورد من تاريخ الفاتورة؟ لو بتدفع فور الاستلام = 1. لو بتتفق على 45 يوم = 45.">؟</span>
+              </span>
               <input name="paymentDays" type="number" min="0" placeholder="متوسط أيام السداد للموردين" />
             </label>
           </div>
 
           <div class="actions">
             <button type="submit">حلل الوضع المالي</button>
+            <div class="example-strip">
+              <span>شوف مثال:</span>
+              <button type="button" class="ghost" data-example="restaurant">مطعم</button>
+              <button type="button" class="ghost" data-example="services">خدمات</button>
+              <button type="button" class="ghost" data-example="trade">تجارة</button>
+            </div>
           </div>
         </form>
 
@@ -297,75 +333,39 @@
           </div>
 
           <form
-            class="feedback-form interactive-card"
-            name="auditlens-feedback"
+            id="followUpForm"
+            class="follow-up-form is-hidden"
+            name="auditlens-followup"
             method="POST"
             data-netlify="true"
             netlify-honeypot="bot-field"
             action="thanks.html"
           >
-            <input type="hidden" name="form-name" value="auditlens-feedback" />
+            <input type="hidden" name="form-name" value="auditlens-followup" />
             <p class="hidden-field">
               <label>لا تملأ هذا الحقل <input name="bot-field" /></label>
             </p>
-            <div class="feedback-head">
-              <strong>شاركنا رأيك واحصل على متابعة مجانية</strong>
-              <span>ساعدنا نحسن الأداة، وسيتم التواصل معك عند إطلاق النسخة المطورة.</span>
-            </div>
-            <div class="feedback-grid">
-              <label>
-                <span>الاسم</span>
-                <input name="name" type="text" placeholder="اسمك" required />
-              </label>
-              <label>
-                <span>الإيميل</span>
-                <input name="email" type="email" placeholder="name@example.com" required />
-              </label>
-              <label>
-                <span>واتساب</span>
-                <input name="whatsapp" type="tel" placeholder="01xxxxxxxxx" />
-              </label>
-              <label>
-                <span>نوع العميل</span>
-                <select name="customerType" required>
-                  <option value="">اختر</option>
-                  <option>صاحب شركة</option>
-                  <option>محاسب مستقل</option>
-                  <option>مكتب محاسبة</option>
-                  <option>طالب/باحث</option>
-                  <option>أخرى</option>
-                </select>
-              </label>
-              <label>
-                <span>نوع النشاط</span>
-                <select name="businessType">
-                  <option value="">اختر</option>
-                  <option>تجارة</option>
-                  <option>خدمات</option>
-                  <option>تصنيع</option>
-                  <option>مطعم أو كافيه</option>
-                  <option>عيادة</option>
-                  <option>مقاولات</option>
-                  <option>أخرى</option>
-                </select>
-              </label>
-              <label>
-                <span>هل التقرير مفيد؟</span>
-                <select name="usefulness" required>
-                  <option value="">اختر</option>
-                  <option>مفيد جدا</option>
-                  <option>مفيد لكن يحتاج تطوير</option>
-                  <option>غير واضح</option>
-                </select>
-              </label>
+            <div class="follow-up-head">
+              <strong>حابب نتابع معاك؟</strong>
+              <span>أخبرنا بأكبر تحدي مالي عندك وسنتواصل معك.</span>
             </div>
             <label class="full-field">
-              <span>ملاحظاتك أو أكثر ميزة تحتاجها</span>
-              <textarea name="feedback" rows="4" placeholder="اكتب رأيك أو المشكلة المالية التي تريد الأداة تساعدك فيها"></textarea>
+              <span>إيه أكبر تحدي مالي بتواجهه حاليا؟</span>
+              <textarea name="challenge" rows="3" placeholder="مثال: مش قادر أتحكم في التحصيل، أو المصروفات أكبر من الإيراد…"></textarea>
             </label>
+            <div class="follow-up-contacts">
+              <label>
+                <span>إيميل (اختياري)</span>
+                <input name="email" type="email" placeholder="name@example.com" />
+              </label>
+              <label>
+                <span>واتساب (اختياري)</span>
+                <input name="whatsapp" type="tel" placeholder="01xxxxxxxxx" />
+              </label>
+            </div>
             <label class="consent-field">
               <input name="consent" type="checkbox" required />
-              <span>أوافق على استخدام بيانات التواصل للرد على طلبي وإرسال تحديثات عن AuditLens.</span>
+              <span>أوافق على التواصل معي بخصوص تحليلي وتحديثات AuditLens.</span>
             </label>
             <button type="submit">إرسال</button>
           </form>
