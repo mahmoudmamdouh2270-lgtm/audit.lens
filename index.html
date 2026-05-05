@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AuditLens</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="AuditLens home" dir="ltr">
+          <img src="assets/auditlens-logo.png" alt="AuditLens" />
+        </a>
+        <div class="site-intro">
+          <p>تحليل مالي مبسط للشركات الصغيرة والمحاسبين</p>
+        </div>
+      </header>
+
+      <section class="hero">
+        <div class="hero-copy">
+          <h1>حوّل أرقام شركتك إلى قرارات واضحة</h1>
+          <p class="lead">
+            أدخل أرقام شهرية بسيطة واحصل على قراءة عملية للربحية والسيولة والمصروفات، مع توصيات تساعدك تعرف أين تقف وماذا تفعل خلال الشهر القادم.
+          </p>
+        </div>
+        <div class="hero-snapshot interactive-card" aria-label="ملخص مؤشرات مالية">
+          <div>
+            <span>الصحة المالية</span>
+            <strong id="heroScore">--</strong>
+          </div>
+          <div>
+            <span>السيولة</span>
+            <strong id="heroRunway">--</strong>
+          </div>
+          <div>
+            <span>هامش الربح</span>
+            <strong id="heroMargin">--</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <form id="financeForm" class="input-panel interactive-card">
+          <div class="section-heading">
+            <p class="eyebrow">بيانات التحليل</p>
+            <h2>أرقام الشهر الحالي</h2>
+          </div>
+
+          <div class="field-grid">
+            <label>
+              <span>اسم النشاط</span>
+              <input name="businessName" type="text" value="شركة تجريبية" />
+            </label>
+
+            <label>
+              <span>نوع النشاط</span>
+              <select name="businessType">
+                <option>تجارة</option>
+                <option>خدمات</option>
+                <option>تصنيع</option>
+                <option>مطعم أو كافيه</option>
+                <option>عيادة</option>
+                <option>مقاولات</option>
+                <option>أخرى</option>
+              </select>
+            </label>
+
+            <label>
+              <span>العملة</span>
+              <select name="currency">
+                <option value="جنيه">جنيه</option>
+                <option value="ريال">ريال</option>
+                <option value="درهم">درهم</option>
+                <option value="دولار">دولار</option>
+              </select>
+            </label>
+
+            <label>
+              <span>عدد الموظفين</span>
+              <input name="employees" type="number" min="0" value="8" />
+            </label>
+
+            <label>
+              <span>الإيرادات الشهرية</span>
+              <input name="revenue" type="number" min="0" value="450000" />
+            </label>
+
+            <label>
+              <span>تكلفة البضاعة أو الخدمة</span>
+              <input name="cost" type="number" min="0" value="250000" />
+            </label>
+
+            <label>
+              <span>المصروفات التشغيلية</span>
+              <input name="expenses" type="number" min="0" value="95000" />
+            </label>
+
+            <label>
+              <span>الرواتب</span>
+              <input name="salaries" type="number" min="0" value="65000" />
+            </label>
+
+            <label>
+              <span>النقدية المتاحة حاليا</span>
+              <input name="cash" type="number" min="0" value="220000" />
+            </label>
+
+            <label>
+              <span>إجمالي العملاء المدينين</span>
+              <input name="receivables" type="number" min="0" value="180000" />
+            </label>
+
+            <label>
+              <span>التزامات قصيرة الأجل</span>
+              <input name="payables" type="number" min="0" value="140000" />
+            </label>
+
+            <label>
+              <span>قيمة المخزون</span>
+              <input name="inventory" type="number" min="0" value="120000" />
+            </label>
+
+            <label>
+              <span>متوسط التحصيل بالأيام</span>
+              <input name="collectionDays" type="number" min="0" value="45" />
+            </label>
+
+            <label>
+              <span>متوسط السداد للموردين بالأيام</span>
+              <input name="paymentDays" type="number" min="0" value="30" />
+            </label>
+          </div>
+
+          <div class="actions">
+            <button type="submit">حلل الوضع المالي</button>
+            <button type="button" id="resetDemo" class="ghost">بيانات تجريبية</button>
+          </div>
+        </form>
+
+        <section class="result-panel" aria-live="polite">
+          <div class="score-band">
+            <div>
+              <p class="eyebrow">النتيجة المختصرة</p>
+              <h2 id="statusTitle">جاهز للتحليل</h2>
+              <p id="statusText">اضغط على زر التحليل لعرض صحة الشركة المالية والتوصيات.</p>
+            </div>
+            <div class="score-ring interactive-card" title="مؤشر القراءة العام">
+              <span id="scoreValue">--</span>
+              <small>من 100</small>
+            </div>
+          </div>
+
+          <div class="dashboard">
+            <div class="kpi-grid">
+              <article class="kpi-card interactive-card">
+                <span>إجمالي الربح</span>
+                <strong id="grossProfitValue">--</strong>
+                <small id="grossMarginValue">--</small>
+              </article>
+              <article class="kpi-card interactive-card">
+                <span>صافي الربح</span>
+                <strong id="netProfitValue">--</strong>
+                <small id="netMarginValue">--</small>
+              </article>
+              <article class="kpi-card interactive-card">
+                <span>كفاية النقدية</span>
+                <strong id="runwayValue">--</strong>
+                <small id="cashValue">--</small>
+              </article>
+              <article class="kpi-card interactive-card">
+                <span>ضغط التحصيل</span>
+                <strong id="collectionValue">--</strong>
+                <small id="paymentValue">--</small>
+              </article>
+            </div>
+
+            <div class="chart-grid">
+              <article class="chart-card interactive-card">
+                <div class="chart-title">
+                  <h3>تركيبة الإيرادات</h3>
+                  <span id="revenueTotal">--</span>
+                </div>
+                <div class="column-chart revenue-columns" aria-label="تركيبة الإيرادات">
+                  <span class="chart-column">
+                    <b id="costBar" class="bar-cost"></b>
+                    <em>التكلفة</em>
+                    <small id="costLabel">--</small>
+                  </span>
+                  <span class="chart-column">
+                    <b id="expenseBar" class="bar-expense"></b>
+                    <em>مصروفات</em>
+                    <small id="expenseLabel">--</small>
+                  </span>
+                  <span class="chart-column">
+                    <b id="salaryBar" class="bar-salary"></b>
+                    <em>رواتب</em>
+                    <small id="salaryLabel">--</small>
+                  </span>
+                  <span class="chart-column">
+                    <b id="profitBar" class="bar-profit"></b>
+                    <em>الربح</em>
+                    <small id="profitLabel">--</small>
+                  </span>
+                </div>
+              </article>
+
+              <article class="chart-card interactive-card">
+                <div class="chart-title">
+                  <h3>السيولة والالتزامات</h3>
+                  <span id="liquidityRatio">--</span>
+                </div>
+                <div class="column-chart liquidity-columns">
+                  <div class="chart-column">
+                    <b id="cashBar"></b>
+                    <span>النقدية</span>
+                    <strong id="cashLabel">--</strong>
+                  </div>
+                  <div class="chart-column">
+                    <b id="receivablesBar"></b>
+                    <span>المدينون</span>
+                    <strong id="receivablesLabel">--</strong>
+                  </div>
+                  <div class="chart-column">
+                    <b id="payablesBar"></b>
+                    <span>الالتزامات</span>
+                    <strong id="payablesLabel">--</strong>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <div class="health-grid">
+              <article class="interactive-card">
+                <span>الربحية</span>
+                <b><i id="profitabilityMeter"></i></b>
+                <strong id="profitabilityLabel">--</strong>
+              </article>
+              <article class="interactive-card">
+                <span>السيولة</span>
+                <b><i id="liquidityMeter"></i></b>
+                <strong id="liquidityLabel">--</strong>
+              </article>
+              <article class="interactive-card">
+                <span>المصروفات</span>
+                <b><i id="expensesMeter"></i></b>
+                <strong id="expensesLabel">--</strong>
+              </article>
+              <article class="interactive-card">
+                <span>التحصيل</span>
+                <b><i id="collectionMeter"></i></b>
+                <strong id="collectionLabel">--</strong>
+              </article>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="report-notes">
+          <div class="insight-block interactive-card">
+            <h3>أهم الملاحظات</h3>
+            <ul id="insights">
+              <li>سيظهر هنا ملخص المخاطر والفرص بعد التحليل.</li>
+            </ul>
+          </div>
+
+          <div class="insight-block interactive-card">
+            <h3>خطة 30 يوم</h3>
+            <ul id="actionsList">
+              <li>سيظهر هنا أول إجراء عملي مناسب للأرقام المدخلة.</li>
+            </ul>
+          </div>
+
+          <div class="cta-strip interactive-card">
+            <div>
+              <strong>تقرير كامل وتحليل مخصص</strong>
+              <span>اعرض تقريرا تفصيليا جاهزا للطباعة أو الحفظ كـ PDF.</span>
+            </div>
+            <button type="button" id="openReport">اطلب التقرير الكامل</button>
+          </div>
+
+          <div class="contact-strip interactive-card">
+            <div>
+              <strong>تواصل لتحليل مخصص</strong>
+              <span>ابعت بيانات شركتك أو اطلب نسخة مخصصة من التقرير.</span>
+            </div>
+            <nav class="contact-icons" aria-label="وسائل التواصل">
+              <a class="mail" href="mailto:mahmoud.mamdouh2270@gmail.com" aria-label="Email" data-tip="mahmoud.mamdouh2270@gmail.com">
+                <span>@</span>
+              </a>
+              <a class="whatsapp" href="https://wa.me/201148889091" target="_blank" rel="noreferrer" aria-label="WhatsApp" data-tip="01148889091">
+                <span>W</span>
+              </a>
+              <a class="linkedin" href="https://www.linkedin.com/in/mahmoud-mamdouh2270/" target="_blank" rel="noreferrer" aria-label="LinkedIn" data-tip="linkedin.com/in/mahmoud-mamdouh2270">
+                <span>in</span>
+              </a>
+            </nav>
+          </div>
+
+          <form
+            class="feedback-form interactive-card"
+            name="auditlens-feedback"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            action="thanks.html"
+          >
+            <input type="hidden" name="form-name" value="auditlens-feedback" />
+            <p class="hidden-field">
+              <label>لا تملأ هذا الحقل <input name="bot-field" /></label>
+            </p>
+            <div class="feedback-head">
+              <strong>شاركنا رأيك واحصل على متابعة مجانية</strong>
+              <span>ساعدنا نحسن الأداة، وسيتم التواصل معك عند إطلاق النسخة المطورة.</span>
+            </div>
+            <div class="feedback-grid">
+              <label>
+                <span>الاسم</span>
+                <input name="name" type="text" placeholder="اسمك" required />
+              </label>
+              <label>
+                <span>الإيميل</span>
+                <input name="email" type="email" placeholder="name@example.com" required />
+              </label>
+              <label>
+                <span>واتساب</span>
+                <input name="whatsapp" type="tel" placeholder="01xxxxxxxxx" />
+              </label>
+              <label>
+                <span>نوع العميل</span>
+                <select name="customerType" required>
+                  <option value="">اختر</option>
+                  <option>صاحب شركة</option>
+                  <option>محاسب مستقل</option>
+                  <option>مكتب محاسبة</option>
+                  <option>طالب/باحث</option>
+                  <option>أخرى</option>
+                </select>
+              </label>
+              <label>
+                <span>نوع النشاط</span>
+                <select name="businessType">
+                  <option value="">اختر</option>
+                  <option>تجارة</option>
+                  <option>خدمات</option>
+                  <option>تصنيع</option>
+                  <option>مطعم أو كافيه</option>
+                  <option>عيادة</option>
+                  <option>مقاولات</option>
+                  <option>أخرى</option>
+                </select>
+              </label>
+              <label>
+                <span>هل التقرير مفيد؟</span>
+                <select name="usefulness" required>
+                  <option value="">اختر</option>
+                  <option>مفيد جدا</option>
+                  <option>مفيد لكن يحتاج تطوير</option>
+                  <option>غير واضح</option>
+                </select>
+              </label>
+            </div>
+            <label class="full-field">
+              <span>ملاحظاتك أو أكثر ميزة تحتاجها</span>
+              <textarea name="feedback" rows="4" placeholder="اكتب رأيك أو المشكلة المالية التي تريد الأداة تساعدك فيها"></textarea>
+            </label>
+            <label class="consent-field">
+              <input name="consent" type="checkbox" required />
+              <span>أوافق على استخدام بيانات التواصل للرد على طلبي وإرسال تحديثات عن AuditLens.</span>
+            </label>
+            <button type="submit">إرسال</button>
+          </form>
+        </section>
+      </section>
+
+      <footer>
+        <p>
+          التقرير إرشادي وتحليلي فقط، ولا يعد استشارة مالية أو ضريبية رسمية.
+          <a href="privacy.html">سياسة الخصوصية</a>
+          <span> | </span>
+          <a href="terms.html">الشروط</a>
+          <span> | </span>
+          <a href="mailto:mahmoud.mamdouh2270@gmail.com">تواصل</a>
+        </p>
+      </footer>
+    </main>
+
+    <div class="modal" id="reportModal" aria-hidden="true">
+      <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="reportTitle">
+        <img class="print-logo" src="assets/auditlens-logo-transparent.png" alt="AuditLens" />
+        <div class="modal-head">
+          <div>
+            <p class="eyebrow">AuditLens Report</p>
+            <h2 id="reportTitle">التقرير المالي الكامل</h2>
+          </div>
+          <button type="button" id="closeReport" class="ghost">إغلاق</button>
+        </div>
+        <div class="report-body" id="fullReport"></div>
+        <div class="modal-actions">
+          <button type="button" id="printReport">طباعة / حفظ PDF</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
